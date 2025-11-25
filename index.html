@@ -6,13 +6,17 @@
 <title>SwamiOM Enterprises</title>
 
 <style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
     body {
         margin: 0;
         padding: 0;
-        overflow: hidden;
         background: radial-gradient(circle at center, #002b4d, #000817);
         font-family: Arial, sans-serif;
-        height: 100vh;
+        min-height: 100vh;
         width: 100vw;
         display: flex;
         flex-direction: column;
@@ -20,90 +24,78 @@
         align-items: center;
         position: relative;
         color: white;
+        overflow-x: hidden;
     }
 
     /* Top Attractive Line */
     .top-line {
-        font-size: 26px;
+        font-size: clamp(18px, 5vw, 28px);
         font-weight: bold;
-        margin-bottom: 25px;
+        margin: 15px 10px;
         animation: fadeIn 3s ease-out forwards, glow 4s infinite alternate;
         opacity: 0;
         text-align: center;
         text-shadow: 0px 0px 12px rgba(0,180,255,0.8);
+        max-width: 90%;
     }
 
     /* Bottom Attractive Line */
     .bottom-line {
-        font-size: 20px;
+        font-size: clamp(14px, 4vw, 20px);
         opacity: 0;
-        margin-top: 25px;
+        margin: 15px 10px;
         animation: fadeIn 3s ease-out 1.5s forwards, softGlow 4s infinite alternate;
         text-align: center;
-        width: 80%;
-        line-height: 1.5em;
+        max-width: 90%;
+        line-height: 1.6em;
         text-shadow: 0px 0px 10px rgba(0,150,255,0.7);
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glow {
-        0% { text-shadow: 0 0 8px #008cff; }
-        100% { text-shadow: 0 0 18px #44caff; }
-    }
-
-    @keyframes softGlow {
-        0% { text-shadow: 0 0 6px #008cff; }
-        100% { text-shadow: 0 0 12px #44caff; }
     }
 
     /* Glowing background lights */
     .glow {
         position: absolute;
-        width: 300px;
-        height: 300px;
+        width: 40vw;
+        height: 40vw;
+        max-width: 300px;
+        max-height: 300px;
         background: radial-gradient(circle, rgba(0,150,255,0.45), transparent 70%);
         filter: blur(60px);
         animation: floatGlow 9s infinite ease-in-out alternate;
         z-index: -3;
     }
-    .glow.g2 { left: 60%; top: 10%; animation-duration: 12s; }
-    .glow.g3 { left: 10%; top: 70%; animation-duration: 10s; }
+    .glow.g2 { left: 60%; top: 5%; animation-duration: 12s; }
+    .glow.g3 { left: 5%; top: 70%; animation-duration: 10s; }
 
     @keyframes floatGlow {
         0% { transform: translate(0px, 0px) scale(1); }
-        100% { transform: translate(60px, -60px) scale(1.2); }
+        100% { transform: translate(40px, -40px) scale(1.1); }
     }
 
     /* CENTER BOX */
     .water-box {
-        width: 330px;
-        height: 430px;
+        width: min(90%, 380px);
+        height: auto;
         border-radius: 20px;
         position: relative;
         overflow: hidden;
         box-shadow: 0px 0px 25px rgba(100,180,255,0.5);
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 25px 20px;
+        margin: 10px 0;
         animation: floatBox 6s infinite ease-in-out;
         z-index: 3;
     }
 
     @keyframes floatBox {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-15px); }
+        50% { transform: translateY(-10px); }
         100% { transform: translateY(0px); }
     }
 
-    /* Animated water background */
     .water-bg {
         position: absolute;
         top: -20%;
@@ -113,102 +105,64 @@
         background: radial-gradient(circle at 30% 30%, #7acbff 0%, #0090ff 40%, #004b8d 90%);
         filter: blur(8px) brightness(1.2);
         opacity: 0.9;
-        transition: transform 0.15s linear;
+        transition: transform 0.12s linear;
         animation: waveMove 7s infinite ease-in-out alternate;
         z-index: -2;
     }
 
     @keyframes waveMove {
         0% { transform: translate(0px, 0px) scale(1.2); }
-        100% { transform: translate(-25px, -35px) scale(1.25); }
+        100% { transform: translate(-20px, -25px) scale(1.25); }
     }
 
-    /* Water reflection light streak */
+    /* Shine */
     .shine {
         position: absolute;
         width: 200%;
         height: 60%;
         top: -10%;
         left: -50%;
-        background: linear-gradient(
-            to right,
-            transparent,
-            rgba(255,255,255,0.25),
-            transparent
-        );
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
         transform: rotate(25deg);
         animation: shineMove 4s infinite ease-out;
         z-index: -1;
     }
 
     @keyframes shineMove {
-        0% { transform: translate(-200%, -50%) rotate(25deg); }
-        100% { transform: translate(200%, 50%) rotate(25deg); }
-    }
-
-    /* Floating bubbles behind water */
-    .bubble {
-        position: absolute;
-        width: 15px;
-        height: 15px;
-        background: rgba(255,255,255,0.35);
-        border-radius: 50%;
-        bottom: -20px;
-        animation: rise 6s infinite ease-in;
-        filter: blur(1px);
-        z-index: -1;
-    }
-    .bubble.b2 { left: 60%; animation-duration: 7s; width: 10px; height: 10px; }
-    .bubble.b3 { left: 20%; animation-duration: 8s; width: 18px; height: 18px; }
-
-    @keyframes rise {
-        0% { transform: translateY(0px) scale(1); opacity: 0.6; }
-        100% { transform: translateY(-350px) scale(1.5); opacity: 0; }
+        0% { transform: translate(-150%, -50%) rotate(25deg); }
+        100% { transform: translate(150%, 50%) rotate(25deg); }
     }
 
     /* Title */
     .title {
-        font-size: 28px;
+        font-size: clamp(20px, 6vw, 32px);
         color: white;
         font-weight: bold;
-        margin-bottom: 40px;
+        margin-bottom: 25px;
         text-shadow: 0px 0px 6px black;
         z-index: 10;
+        text-align: center;
     }
 
     /* Buttons */
     .btn {
-        width: 230px;
+        width: 85%;
         padding: 14px;
-        margin: 10px;
+        margin: 8px;
         background: rgba(255,255,255,0.25);
         border: 1px solid white;
-        border-radius: 10px;
+        border-radius: 12px;
         color: white;
-        font-size: 18px;
-        font-weight: bold;
+        font-size: clamp(14px, 4vw, 20px);
         cursor: pointer;
         text-align: center;
         position: relative;
         overflow: hidden;
+        transition: 0.2s;
     }
 
-    /* Button ripple */
-    .btn:active::after {
-        content: "";
-        position: absolute;
-        width: 200%;
-        height: 200%;
+    .btn:hover {
         background: rgba(255,255,255,0.35);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        border-radius: 50%;
-        animation: ripple 0.4s forwards;
-    }
-
-    @keyframes ripple {
-        to { transform: translate(-50%, -50%) scale(1); opacity: 0; }
     }
 
 </style>
@@ -216,62 +170,49 @@
 
 <body>
 
-<!-- Glowing background lights -->
 <div class="glow"></div>
 <div class="glow g2"></div>
 <div class="glow g3"></div>
 
-<!-- ⭐ Top Business Line -->
 <div class="top-line">
     “Delivering Pure Water, Delivering Pure Trust.”
 </div>
 
-<!-- Main Box -->
 <div class="water-box">
-
     <div class="water-bg" id="waterGyro"></div>
     <div class="shine"></div>
-
-    <div class="bubble"></div>
-    <div class="bubble b2"></div>
-    <div class="bubble b3"></div>
 
     <div class="title">SwamiOM Enterprises</div>
 
     <div class="btn" onclick="copyNumber()">COPY MOBILE NUMBER</div>
     <div class="btn" onclick="copyMail()">COPY MAIL</div>
-
 </div>
 
-<!-- ⭐ Bottom Business Line -->
 <div class="bottom-line">
-    Trusted water bottle suppliers for homes, shops, offices & events. <br>
-    Fast delivery • Premium quality • 100% customer satisfaction 🔹
+    Trusted water bottle suppliers for homes, shops, offices & events.<br>
+    Fast delivery • Premium quality • 100% satisfaction.
 </div>
 
 <script>
-/* Gyroscope + Mouse responsive water */
 let water = document.getElementById("waterGyro");
 
-/* Gyroscope Movement */
+/* Gyroscope (reduced intensity for mobile stability) */
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", function(event) {
-        let x = event.gamma;
-        let y = event.beta;
-
-        water.style.transform = `translate(${x * 1.2}px, ${y * 1.2}px) scale(1.25)`;
+        let x = event.gamma / 2;
+        let y = event.beta / 4;
+        water.style.transform = `translate(${x}px, ${y}px) scale(1.2)`;
     });
 }
 
-/* Mouse Movement */
+/* Mouse Movement (desktop only) */
 document.addEventListener("mousemove", function(e) {
-    let x = (e.clientX - window.innerWidth/2) / 35;
-    let y = (e.clientY - window.innerHeight/2) / 35;
-
-    water.style.transform = `translate(${x}px, ${y}px) scale(1.25)`;
+    let x = (e.clientX - window.innerWidth / 2) / 50;
+    let y = (e.clientY - window.innerHeight / 2) / 50;
+    water.style.transform = `translate(${x}px, ${y}px) scale(1.2)`;
 });
 
-/* COPY BUTTONS */
+/* Copy Buttons */
 function copyNumber() {
     navigator.clipboard.writeText("7709253704");
     alert("Mobile number copied: 7709253704");
