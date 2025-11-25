@@ -14,7 +14,7 @@
     body {
         margin: 0;
         padding: 0;
-        background: radial-gradient(circle at center, #002b4d, #000817);
+        background: radial-gradient(circle at center, #003760, #000814);
         font-family: Arial, sans-serif;
         min-height: 100vh;
         width: 100vw;
@@ -22,126 +22,89 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: relative;
-        color: white;
         overflow-x: hidden;
     }
 
-    /* Top Attractive Line */
+    .top-line, .bottom-line {
+        text-align: center;
+        padding: 8px 14px;
+        text-shadow: 0px 0px 8px rgba(0,150,255,0.6);
+        opacity: 0;
+        animation: fadeIn 1.5s forwards;
+    }
+
     .top-line {
-        font-size: clamp(18px, 5vw, 28px);
-        font-weight: bold;
-        margin: 15px 10px;
-        animation: fadeIn 3s ease-out forwards, glow 4s infinite alternate;
-        opacity: 0;
-        text-align: center;
-        text-shadow: 0px 0px 12px rgba(0,180,255,0.8);
-        max-width: 90%;
+        font-size: clamp(18px, 5vw, 26px);
+        animation-delay: 0.3s;
     }
 
-    /* Bottom Attractive Line */
     .bottom-line {
-        font-size: clamp(14px, 4vw, 20px);
-        opacity: 0;
-        margin: 15px 10px;
-        animation: fadeIn 3s ease-out 1.5s forwards, softGlow 4s infinite alternate;
-        text-align: center;
-        max-width: 90%;
-        line-height: 1.6em;
-        text-shadow: 0px 0px 10px rgba(0,150,255,0.7);
+        font-size: clamp(12px, 4vw, 18px);
+        animation-delay: 0.8s;
+        max-width: 85%;
+        line-height: 1.5em;
     }
 
-    /* Glowing background lights */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0px); }
+    }
+
+    /* Lights (lighter now) */
     .glow {
         position: absolute;
-        width: 40vw;
-        height: 40vw;
-        max-width: 300px;
-        max-height: 300px;
-        background: radial-gradient(circle, rgba(0,150,255,0.45), transparent 70%);
-        filter: blur(60px);
-        animation: floatGlow 9s infinite ease-in-out alternate;
-        z-index: -3;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba(0,150,255,0.25), transparent 70%);
+        filter: blur(40px);
+        animation: glowFloat 10s infinite alternate ease-in-out;
+        z-index: -2;
     }
-    .glow.g2 { left: 60%; top: 5%; animation-duration: 12s; }
-    .glow.g3 { left: 5%; top: 70%; animation-duration: 10s; }
+    .g1 { top: 5%; left: 10%; }
+    .g2 { bottom: 10%; right: 15%; animation-duration: 14s; }
 
-    @keyframes floatGlow {
-        0% { transform: translate(0px, 0px) scale(1); }
-        100% { transform: translate(40px, -40px) scale(1.1); }
+    @keyframes glowFloat {
+        0% { transform: translate(0px, 0px); }
+        100% { transform: translate(20px, -20px); }
     }
 
-    /* CENTER BOX */
+    /* MAIN WATER BOX */
     .water-box {
-        width: min(90%, 380px);
-        height: auto;
-        border-radius: 20px;
+        width: min(90%, 360px);
+        padding: 22px 18px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 18px;
+        backdrop-filter: blur(6px);
+        box-shadow: 0px 0px 18px rgba(0,150,255,0.25);
         position: relative;
         overflow: hidden;
-        box-shadow: 0px 0px 25px rgba(100,180,255,0.5);
-        backdrop-filter: blur(10px);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 25px 20px;
-        margin: 10px 0;
-        animation: floatBox 6s infinite ease-in-out;
-        z-index: 3;
+        animation: float 6s infinite ease-in-out;
+        z-index: 5;
     }
 
-    @keyframes floatBox {
+    @keyframes float {
         0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
+        50% { transform: translateY(-6px); }
         100% { transform: translateY(0px); }
     }
 
+    /* Water Background (lighter animation) */
     .water-bg {
         position: absolute;
+        width: 130%;
+        height: 130%;
         top: -20%;
         left: -20%;
-        width: 140%;
-        height: 140%;
-        background: radial-gradient(circle at 30% 30%, #7acbff 0%, #0090ff 40%, #004b8d 90%);
-        filter: blur(8px) brightness(1.2);
-        opacity: 0.9;
-        transition: transform 0.12s linear;
-        animation: waveMove 7s infinite ease-in-out alternate;
-        z-index: -2;
-    }
-
-    @keyframes waveMove {
-        0% { transform: translate(0px, 0px) scale(1.2); }
-        100% { transform: translate(-20px, -25px) scale(1.25); }
-    }
-
-    /* Shine */
-    .shine {
-        position: absolute;
-        width: 200%;
-        height: 60%;
-        top: -10%;
-        left: -50%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent);
-        transform: rotate(25deg);
-        animation: shineMove 4s infinite ease-out;
+        background: radial-gradient(circle at 30% 30%, #78c7ff, #007ad6, #004a87);
+        transform: scale(1.15);
+        transition: transform 0.15s linear;
+        animation: waveSlow 10s infinite alternate ease-in-out;
         z-index: -1;
     }
 
-    @keyframes shineMove {
-        0% { transform: translate(-150%, -50%) rotate(25deg); }
-        100% { transform: translate(150%, 50%) rotate(25deg); }
-    }
-
-    /* Title */
-    .title {
-        font-size: clamp(20px, 6vw, 32px);
-        color: white;
-        font-weight: bold;
-        margin-bottom: 25px;
-        text-shadow: 0px 0px 6px black;
-        z-index: 10;
-        text-align: center;
+    @keyframes waveSlow {
+        0% { transform: translate(0px, 0px) scale(1.15); }
+        100% { transform: translate(-10px, -10px) scale(1.18); }
     }
 
     /* Buttons */
@@ -149,38 +112,39 @@
         width: 85%;
         padding: 14px;
         margin: 8px;
-        background: rgba(255,255,255,0.25);
-        border: 1px solid white;
-        border-radius: 12px;
-        color: white;
-        font-size: clamp(14px, 4vw, 20px);
-        cursor: pointer;
         text-align: center;
-        position: relative;
-        overflow: hidden;
+        font-size: clamp(14px, 4vw, 20px);
+        color: white;
+        background: rgba(255,255,255,0.22);
+        border: 1px solid rgba(255,255,255,0.5);
+        border-radius: 12px;
+        cursor: pointer;
         transition: 0.2s;
     }
 
-    .btn:hover {
-        background: rgba(255,255,255,0.35);
+    .btn:active {
+        transform: scale(0.97);
+        background: rgba(255,255,255,0.30);
     }
 
+    .title {
+        font-size: clamp(20px, 6vw, 30px);
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 0px 0px 6px black;
+    }
 </style>
 </head>
 
 <body>
 
-<div class="glow"></div>
+<div class="glow g1"></div>
 <div class="glow g2"></div>
-<div class="glow g3"></div>
 
-<div class="top-line">
-    “Delivering Pure Water, Delivering Pure Trust.”
-</div>
+<div class="top-line">“Delivering Pure Water, Delivering Pure Trust.”</div>
 
 <div class="water-box">
     <div class="water-bg" id="waterGyro"></div>
-    <div class="shine"></div>
 
     <div class="title">SwamiOM Enterprises</div>
 
@@ -189,30 +153,35 @@
 </div>
 
 <div class="bottom-line">
-    Trusted water bottle suppliers for homes, shops, offices & events.<br>
-    Fast delivery • Premium quality • 100% satisfaction.
+    Premium water bottle supplier • Fast delivery • Trusted by hundreds.
 </div>
 
 <script>
 let water = document.getElementById("waterGyro");
+let lastUpdate = 0;
 
-/* Gyroscope (reduced intensity for mobile stability) */
+/* Gyroscope optimization (10 updates per sec) */
 if (window.DeviceOrientationEvent) {
     window.addEventListener("deviceorientation", function(event) {
-        let x = event.gamma / 2;
-        let y = event.beta / 4;
-        water.style.transform = `translate(${x}px, ${y}px) scale(1.2)`;
+        let now = Date.now();
+        if (now - lastUpdate < 100) return;
+        lastUpdate = now;
+
+        let x = event.gamma / 3;
+        let y = event.beta / 6;
+
+        water.style.transform = `translate(${x}px, ${y}px) scale(1.15)`;
     });
 }
 
-/* Mouse Movement (desktop only) */
-document.addEventListener("mousemove", function(e) {
-    let x = (e.clientX - window.innerWidth / 2) / 50;
-    let y = (e.clientY - window.innerHeight / 2) / 50;
-    water.style.transform = `translate(${x}px, ${y}px) scale(1.2)`;
+/* Desktop mouse movement */
+document.addEventListener("mousemove", e => {
+    let x = (e.clientX - window.innerWidth / 2) / 60;
+    let y = (e.clientY - window.innerHeight / 2) / 60;
+    water.style.transform = `translate(${x}px, ${y}px) scale(1.15)`;
 });
 
-/* Copy Buttons */
+/* Copy buttons */
 function copyNumber() {
     navigator.clipboard.writeText("7709253704");
     alert("Mobile number copied: 7709253704");
