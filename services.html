@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services - SWAMIOM-ENTERPRISES</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body{height:100%;}
+    body {
+      background: linear-gradient(180deg,#050505 0%, #0b0b0b 100%);
+      color: #ffffff;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x: hidden;
+      padding-bottom:60px;
+    }
+
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(8px);
+      background: rgba(255,255,255,0.02);
+      padding:18px 8%;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .logo{font-weight:800; letter-spacing:1px; font-size:1.15rem}
+
+    .hero{padding:90px 8% 30px 8%; text-align:center}
+    .hero h1{font-size:2.6rem; margin-bottom:10px; transform:translateY(8px); opacity:0; animation:slideUp .9s ease forwards;}
+    .hero p{color:#cfcfcf; max-width:720px; margin:0 auto; margin-top:8px; opacity:0; transform:translateY(8px); animation:slideUp .9s ease .15s forwards}
+
+    @keyframes slideUp{to{opacity:1; transform:translateY(0)}}
+
+    .instruction-box{
+      width:min(920px,92%);
+      margin:38px auto;
+      background:linear-gradient(180deg,rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:30px; border-radius:16px; text-align:center; box-shadow:0 6px 30px rgba(2,6,23,0.6);
+      transform:translateY(10px); opacity:0; animation:slideUp .9s ease .25s forwards;
+    }
+
+    .instruction-box h2{font-size:1.6rem; margin-bottom:12px}
+    .instruction-box p{color:#d0d0d0; line-height:1.5}
+
+    .actions{display:flex; gap:12px; justify-content:center; margin-top:20px; flex-wrap:wrap}
+
+    .btn{
+      padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-weight:700; font-size:0.98rem;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+
+    .btn:active{transform:translateY(1px)}
+
+    .copy-btn{background:#ffffff; color:#111}
+    .openwa-btn{background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.12)}
+
+    .hint{font-size:0.95rem; color:#9be7c6; display:block; margin-top:12px; min-height:20px}
+
+    .fallback-note{margin-top:12px; color:#f5d08a; font-size:0.92rem}
+
+    .footer{margin-top:48px; text-align:center; color:#9a9a9a; font-size:0.9rem}
+
+    /* small floating water-bottle style decoration */
+    .bottle-deco{position:fixed; right:18px; bottom:18px; width:70px; height:70px; border-radius:18px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#f7f7f7,#e6e6e6); color:#111; font-weight:800; box-shadow:0 8px 30px rgba(2,6,23,0.6); opacity:0.08}
+
+    @media (max-width:520px){ .hero h1{font-size:1.7rem} .instruction-box{padding:20px} .btn{width:100%} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">SWAMIOM-ENTERPRISES</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Start a Premium Deal — It's Quick</h1>
+      <p>Follow the steps below. Tap <strong>Contact</strong> to copy our number (or use the WhatsApp button to open chat directly with the message <em>DEAL</em> prefilled).</p>
+    </section>
+
+    <section class="instruction-box" role="region" aria-label="contact instructions">
+      <h2>Simple Steps to Start Your Deal</h2>
+      <p>
+        1️⃣ Tap <strong>Contact</strong> to copy the number to your clipboard.<br>
+        2️⃣ Open WhatsApp and paste/send the exact message: <strong>"DEAL"</strong>.<br>
+        3️⃣ Or use the <strong>Open WhatsApp</strong> button to start the chat with the message prefilled.
+      </p>
+
+      <div class="actions">
+        <button class="btn copy-btn" id="copyBtn" aria-live="polite">Contact</button>
+        <button class="btn openwa-btn" id="waBtn">Open WhatsApp</button>
+      </div>
+
+      <div class="hint" id="hint" aria-atomic="true"></div>
+      <div class="fallback-note" id="fallback" style="display:none">If copying is blocked by your browser, long-press the number below to select and copy it manually:</div>
+      <pre id="plainNumber" style="margin-top:12px; background:transparent; color:#cfcfcf; border-radius:8px; padding:8px 10px; display:none">+91 7709253704</pre>
+    </section>
+
+    <div class="footer">© 2025 SWAMIOM-ENTERPRISES • All Rights Reserved</div>
+
+    <div class="bottle-deco">W</div>
+  </main>
+
+  <script>
+    (function(){
+      const number = '+91 7709253704';
+      const phoneForWa = '917709253704'; // number in international format without + / spaces for wa.me
+      const prefilledText = 'DEAL';
+
+      const copyBtn = document.getElementById('copyBtn');
+      const waBtn = document.getElementById('waBtn');
+      const hint = document.getElementById('hint');
+      const fallback = document.getElementById('fallback');
+      const plainNumber = document.getElementById('plainNumber');
+
+      function showHint(text, success=true){
+        hint.textContent = text;
+        hint.style.color = success ? '#9be7c6' : '#f5b8b8';
+      }
+
+      // Primary copy using Clipboard API (requires secure context and permission)
+      async function copyToClipboard(text){
+        // Try navigator.clipboard first
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          try{
+            await navigator.clipboard.writeText(text);
+            return {ok:true, method:'clipboard'};
+          }catch(err){
+            // fall through to fallback method
+            console.warn('Clipboard API failed:', err);
+          }
+        }
+
+        // Fallback: create a hidden textarea, select and execCommand
+        try{
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          // avoid scrolling to bottom
+          ta.style.position = 'fixed'; ta.style.top = '-9999px';
+          ta.setAttribute('aria-hidden','true');
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+
+          // execCommand may be deprecated but works as fallback in many browsers
+          const successful = document.execCommand && document.execCommand('copy');
+          document.body.removeChild(ta);
+          if(successful) return {ok:true, method:'execCommand'};
+        }catch(e){
+          console.warn('execCommand fallback failed', e);
+        }
+
+        // give up — environment blocked copying (e.g., sandboxed iframe with strict policy)
+        return {ok:false};
+      }
+
+      copyBtn.addEventListener('click', async function(e){
+        // This click is a user gesture — best chance for clipboard to be allowed.
+        showHint('Copying number...');
+        const result = await copyToClipboard(number);
+        if(result.ok){
+          showHint('Number copied ✔ — open WhatsApp and send: DEAL');
+          fallback.style.display = 'none'; plainNumber.style.display = 'none';
+        }else{
+          showHint('Unable to copy automatically. Please copy the number manually below.', false);
+          fallback.style.display = 'block'; plainNumber.style.display = 'block';
+        }
+      });
+
+      // Open wa.me link with prefilled text. This will open WhatsApp if available.
+      waBtn.addEventListener('click', function(){
+        // Use encodeURIComponent for the text
+        const url = 'https://wa.me/' + phoneForWa + '?text=' + encodeURIComponent(prefilledText);
+        // open in new tab/window — most browsers allow this as user-initiated
+        window.open(url, '_blank');
+      });
+
+      // Accessibility: allow copy on Enter when focused
+      copyBtn.addEventListener('keyup', function(e){ if(e.key === 'Enter') copyBtn.click(); });
+      waBtn.addEventListener('keyup', function(e){ if(e.key === 'Enter') waBtn.click(); });
+
+    })();
+  </script>
+</body>
+</html>
